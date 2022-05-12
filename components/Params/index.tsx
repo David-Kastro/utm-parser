@@ -116,12 +116,11 @@ const Params: React.FC<ParamsProps> = ({ paramsToRead, setParamsToRead }) => {
     const value = e.target.value
     const newParamClone = JSON.parse(JSON.stringify(newParam)) as ParamsState
 
-    if(newParamClone?.parsing?.type !== ParsingTypes.FORMAT || !newParamClone?.parsing?.format) {
+    if(newParamClone?.parsing?.type !== ParsingTypes.FORMAT || (!newParamClone?.parsing?.format && newParamClone?.parsing?.format !== '')) {
       return
     }
 
     newParamClone.parsing.format = value
-
 
     setNewParam(newParamClone)
   }
@@ -225,7 +224,7 @@ const Params: React.FC<ParamsProps> = ({ paramsToRead, setParamsToRead }) => {
     }
 
     return (
-      <form className='flex flex-wrap w-full'>
+      <div className='flex flex-wrap w-full'>
         <input className='w-10/12 text-xs p-2' placeholder='utm_campaign' onChange={handleParamValueInput} value={newParam.value}/>
         <div className='w-2/12'>
           {
@@ -250,7 +249,7 @@ const Params: React.FC<ParamsProps> = ({ paramsToRead, setParamsToRead }) => {
         {renderParsing()}
         <div className=' cursor-pointer' onClick={handleCancel}>Cancel</div>
         <div className=' cursor-pointer' onClick={handleSave}>Save</div>
-      </form>
+      </div>
     )
   }
 

@@ -53,3 +53,10 @@ pre code {
   white-space: normal;
   line-break: anywhere;
 }
+
+div.cursor-pointer {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 5px;
+}

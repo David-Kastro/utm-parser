@@ -40,6 +40,7 @@ const GenerateScript: React.FC<GenerateScriptProps> = ({
 													actionsVariables[param.value] = inputParsing({param: param.value, value: paramValue}, c.return)
 													break
 											}
+											actionsVariables[param.value] = paramValue
 									}
 							}
 			
@@ -60,7 +61,7 @@ const GenerateScript: React.FC<GenerateScriptProps> = ({
 							continue
 					}
 					if(action.type === 'insertattr') {
-							var textSplit = actionText.replace('"', '').split('=')
+							var textSplit = actionText.replaceAll('"', '').replace(/=/, '{<#>}').split('{<#>}')
 							var attributeName = textSplit[0]
 							var attributeValue = textSplit[1]
 			
@@ -73,8 +74,11 @@ const GenerateScript: React.FC<GenerateScriptProps> = ({
 			
 					if(action.type === 'insertlink') {
 							var elementHtml = element.outerHTML;
-							var newElementHtml = '<a href="' + actionText + '">' + elementHtml + '</a>';
-							element.outerHTML = newElementHtml;
+							var newElementHtml = document.createElement('a');
+							newElementHtml.setAttribute('href', actionText)
+							newElementHtml.setAttribute('target', '_blank')
+							newElementHtml.innerHTML = elementHtml
+							element.parentNode.replaceChild(newElementHtml, element)
 					}
 			}
 
@@ -82,7 +86,7 @@ const GenerateScript: React.FC<GenerateScriptProps> = ({
 				var varriablesKeys = Object.keys(variables)
 				var newString = templateString
 				for(var key of varriablesKeys) {
-						newString.replace('{' + key +'}', variables[key])
+					newString = newString.replaceAll('{' + key +'}', variables[key])
 				}
 				return newString
 			}
